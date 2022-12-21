@@ -1,58 +1,40 @@
 #shows the numbering system of the grid
 def showGridNum():
-    print('-------')
     print('|1|2|3|')
-    print('-------')
     print('|4|5|6|')
-    print('-------')
     print('|7|8|9|')
-    print('-------')
 
 #prints the current layout of the grid
 def showGrid():
-    print('-------')
-    print(f'|{tttGrid.one}|{tttGrid.two}|{tttGrid.three}|')
-    print('-------')
-    print(f'|{tttGrid.four}|{tttGrid.five}|{tttGrid.six}|')
-    print('-------')
-    print(f'|{tttGrid.seven}|{tttGrid.eight}|{tttGrid.nine}|')
-    print('-------')
+    print(f'|{grid[0]}|{grid[1]}|{grid[2]}|')
+    print(f'|{grid[3]}|{grid[4]}|{grid[5]}|')
+    print(f'|{grid[6]}|{grid[7]}|{grid[8]}|')
 
-#processes player 1's turn and checks for a victory
-def player1Turn():
-    usrInput = input("Player 1 enter position: ")
+#processes players turn and checks for a victory
+def playerTurn(player):
+    playerNumbers = ["1","2"]
+    playerLabels = ["x", "o"]
+    usrInput = input("Player " + playerNumbers[player] + " enter position: ")
     try: #this forces a valid input
-        if getattr(tttGrid, num2words[int(usrInput)]) == '_': #this makes sure that the position is free
-            setattr(tttGrid, num2words[int(usrInput)], 'x')
+        if grid[int(usrInput) - 1] == '_': #this makes sure that the position is free
+            grid[int(usrInput) - 1] = playerLabels[player]
         else:
-            player1Turn()
+            playerTurn(player)
     except:
-        player1Turn()
-    checkVictory()
-
-#processes player 2's turn and checks for a victory
-def player2Turn():
-    usrInput = input("Player 2 enter position: ")
-    try: #this forces a valid input
-        if getattr(tttGrid, num2words[int(usrInput)]) == '_': #this makes sure that the position is free
-            setattr(tttGrid, num2words[int(usrInput)], 'o')
-        else:
-            player2Turn()
-    except:
-        player2Turn()
+        playerTurn(player)
     checkVictory()
 
 #updates the values of the lines that will result in a victory
 def updateLines():
     global hor1, hor2, hor3, ver1, ver2, ver3, diag1, diag2, victoryLines
-    hor1 = [tttGrid.one, tttGrid.two, tttGrid.three]
-    hor2 = [tttGrid.four, tttGrid.five, tttGrid.six]
-    hor3 = [tttGrid.seven, tttGrid.eight, tttGrid.nine]
-    ver1 = [tttGrid.one, tttGrid.four, tttGrid.seven]
-    ver2 = [tttGrid.two, tttGrid.five, tttGrid.eight]
-    ver3 = [tttGrid.three, tttGrid.six, tttGrid.nine]
-    diag1 = [tttGrid.one, tttGrid.five, tttGrid.nine]
-    diag2 = [tttGrid.seven, tttGrid.five, tttGrid.three]
+    hor1 = [grid[0], grid[1], grid[2]]
+    hor2 = [grid[3], grid[4], grid[5]]
+    hor3 = [grid[6], grid[7], grid[8]]
+    ver1 = [grid[0], grid[3], grid[6]]
+    ver2 = [grid[1], grid[4], grid[7]]
+    ver3 = [grid[2], grid[5], grid[8]]
+    diag1 = [grid[0], grid[4], grid[8]]
+    diag2 = [grid[6], grid[4], grid[2]]
     victoryLines = [hor1, hor2, hor3, ver1, ver2, ver3, diag1, diag2]
 
 #checks if any of the lines are full
@@ -65,37 +47,29 @@ def checkVictory():
 
 #creates the grid and starts the game
 def startGame():
-    global tttGrid, victory
+    global grid, victory
     showGridNum()
-    tttGrid = Grids()
+    #list that represents the grid
+    grid = ['_','_','_', #0,1,2 (by index)
+            '_','_','_', #3,4,5
+            '_','_','_'] #6,7,8
     victory = 'n'
+    player1Turns = 0
     while(victory == 'n'):
-        player1Turn()
+        player1Turns = player1Turns + 1
+        if player1Turns == 5:
+            victory = 'd'
+        playerTurn(0) #0 represents player 1
         showGrid()
         if victory == 'n':
-            player2Turn()
+            playerTurn(1) #1 represents player 2
             showGrid()
     if victory == 'x':
-        print('Player 1 wins')
-    else:
-        print('Player 2 wins')
-    print('')
+        print('Player 1 wins\n')
+    elif victory == 'o':
+        print('Player 2 wins\n')
+    else: #victory == 'd'
+        print("Draw\n")
 
-#dictionary that allows a conversion between an integer and the spelling of that integer
-num2words = {1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six', 7: 'seven', 8: 'eight', 9: 'nine'}
-
-#class that represents the grid
-class Grids:
-    def __init__(self):
-        self.one = '_'
-        self.two = '_'
-        self.three = '_'
-        self.four = '_'
-        self.five = '_'
-        self.six = '_'
-        self.seven = '_'
-        self.eight = '_'
-        self.nine = '_'
-
-while(True):
+if __name__ == "__main__":
     startGame()
