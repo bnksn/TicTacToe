@@ -3,16 +3,15 @@ def ShowGrid(grid):
     print(f'|{grid[3]}|{grid[4]}|{grid[5]}|')
     print(f'|{grid[6]}|{grid[7]}|{grid[8]}|')
 
-def PlayerAction(playerIndex, grid, victory):
-    playerLabels = ["x", "o"]
-    usrInput = input(playerLabels[playerIndex] + ": ")
+def PlayerAction(player, grid, victory):
+    usrInput = input(player + ": ")
     try: #force a valid input
         if grid[int(usrInput) - 1] == '_': #check if the position is free
-            grid[int(usrInput) - 1] = playerLabels[playerIndex]
+            grid[int(usrInput) - 1] = player
         else:
-            PlayerAction(playerIndex, grid, victory)
+            PlayerAction(player, grid, victory)
     except:
-        PlayerAction(playerIndex, grid, victory)
+        PlayerAction(player, grid, victory)
     victory = CheckVictory(grid, victory)
     return grid, victory
 
@@ -44,10 +43,10 @@ def StartGame():
         playerTurn += 1
         if playerTurn == 5:
             victory = 'd'
-        grid, victory = PlayerAction(0, grid, victory)
+        grid, victory = PlayerAction('x', grid, victory)
         ShowGrid(grid)
         if victory == 'n':
-            grid, victory = PlayerAction(1, grid, victory)
+            grid, victory = PlayerAction('o', grid, victory)
             ShowGrid(grid)
     if victory == 'd':
         print("Draw\n")
