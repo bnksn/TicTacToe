@@ -3,17 +3,16 @@ def ShowGrid(grid):
     print(f'|{grid[3]}|{grid[4]}|{grid[5]}|')
     print(f'|{grid[6]}|{grid[7]}|{grid[8]}|')
 
-def PlayerTurn(player, grid, victory):
-    players = ["A","B"]
+def PlayerAction(playerIndex, grid, victory):
     playerLabels = ["x", "o"]
-    usrInput = input("Player " + players[player] + " enter position: ")
+    usrInput = input(playerLabels[playerIndex] + ": ")
     try: #force a valid input
         if grid[int(usrInput) - 1] == '_': #check if the position is free
-            grid[int(usrInput) - 1] = playerLabels[player]
+            grid[int(usrInput) - 1] = playerLabels[playerIndex]
         else:
-            PlayerTurn(player, grid, victory)
+            PlayerAction(playerIndex, grid, victory)
     except:
-        PlayerTurn(player, grid, victory)
+        PlayerAction(playerIndex, grid, victory)
     victory = CheckVictory(grid, victory)
     return grid, victory
 
@@ -36,27 +35,25 @@ def StartGame():
     print('|1|2|3|')
     print('|4|5|6|')
     print('|7|8|9|')
-    print("Player A is 'x', Player B is 'o'\n")
     grid = ['_','_','_',
             '_','_','_',
             '_','_','_']
     victory = 'n'
-    playerATurns = 0
+    playerTurn = 0
     while(victory == 'n'):
-        playerATurns += 1
-        if playerATurns == 5:
+        playerTurn += 1
+        if playerTurn == 5:
             victory = 'd'
-        grid, victory = PlayerTurn(0, grid, victory) #0 represents player A
+        grid, victory = PlayerAction(0, grid, victory)
         ShowGrid(grid)
         if victory == 'n':
-            grid, victory = PlayerTurn(1, grid, victory) #1 represents player B
+            grid, victory = PlayerAction(1, grid, victory)
             ShowGrid(grid)
-    if victory == 'x':
-        print('Player A wins\n')
-    elif victory == 'o':
-        print('Player B wins\n')
-    else: #victory == 'd'
+    if victory == 'd':
         print("Draw\n")
+    else:
+        print(victory + " wins\n")
+    StartGame()
 
 if __name__ == "__main__":
     StartGame()
