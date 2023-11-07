@@ -9,9 +9,9 @@ def PlayerAction(player, grid, victory):
         if grid[int(usrInput) - 1] == '_': #check if the position is free
             grid[int(usrInput) - 1] = player
         else:
-            PlayerAction(player, grid, victory)
+            grid, victory = PlayerAction(player, grid, victory)
     except:
-        PlayerAction(player, grid, victory)
+        grid, victory = PlayerAction(player, grid, victory)
     victory = CheckVictory(grid, victory)
     return grid, victory
 
