@@ -1,9 +1,9 @@
-def ShowGrid(grid):
+def ShowGrid(grid:list) -> None:
     print(f'|{grid[0]}|{grid[1]}|{grid[2]}|')
     print(f'|{grid[3]}|{grid[4]}|{grid[5]}|')
     print(f'|{grid[6]}|{grid[7]}|{grid[8]}|')
 
-def PlayerAction(player, grid, victory):
+def PlayerAction(player:str, grid:list, victory:str) -> tuple:
     usrInput = input(player + ": ")
     try: #force a valid input
         if grid[int(usrInput) - 1] == '_': #check if the position is free
@@ -15,7 +15,7 @@ def PlayerAction(player, grid, victory):
     victory = CheckVictory(grid, victory)
     return grid, victory
 
-def CheckVictory(grid, victory):
+def CheckVictory(grid:list, victory:str) -> str:
     hor1 = [grid[0], grid[1], grid[2]]
     hor2 = [grid[3], grid[4], grid[5]]
     hor3 = [grid[6], grid[7], grid[8]]
@@ -30,7 +30,7 @@ def CheckVictory(grid, victory):
             return line[0]
     return victory
 
-def StartGame():
+def StartGame() -> None:
     print('|1|2|3|')
     print('|4|5|6|')
     print('|7|8|9|')
