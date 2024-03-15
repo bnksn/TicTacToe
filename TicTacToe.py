@@ -1,64 +1,62 @@
-def ShowGrid(grid:list) -> None:
-    print(f'|{grid[0]}|{grid[1]}|{grid[2]}|')
-    print(f'|{grid[3]}|{grid[4]}|{grid[5]}|')
-    print(f'|{grid[6]}|{grid[7]}|{grid[8]}|')
-
-def PlayerAction(player:str, grid:list, victory:str) -> tuple:
-    usrInput = input(player + ": ")
-    if (usrInput in ("1", "2", "3", "4", "5", "6", "7", "8", "9")) and (grid[int(usrInput) - 1] == '_'):
-        grid[int(usrInput) - 1] = player
-    else:
-        grid, victory = PlayerAction(player, grid, victory)
-
-    victory = CheckVictory(grid, victory)
-
-    return grid, victory
-
-def CheckVictory(grid:list, victory:str) -> str:
-    hor1 = [grid[0], grid[1], grid[2]]
-    hor2 = [grid[3], grid[4], grid[5]]
-    hor3 = [grid[6], grid[7], grid[8]]
-    ver1 = [grid[0], grid[3], grid[6]]
-    ver2 = [grid[1], grid[4], grid[7]]
-    ver3 = [grid[2], grid[5], grid[8]]
-    diag1 = [grid[0], grid[4], grid[8]]
-    diag2 = [grid[6], grid[4], grid[2]]
-    victoryLines = [hor1, hor2, hor3, ver1, ver2, ver3, diag1, diag2]
-
-    for line in victoryLines:
-        if len(set(line)) == 1 and line[0] != '_': #check if all of the elements of a victory line are identical 
-            return line[0]
-        
-    return victory
-
-def StartGame() -> None:
-    print('|1|2|3|')
-    print('|4|5|6|')
-    print('|7|8|9|')
-    grid = ['_','_','_',
-            '_','_','_',
-            '_','_','_']
-    victory = 'n'
-    playerTurn = 0
+class TicTacToe():
+    def __init__(self) -> None:
+        print('|1|2|3|')
+        print('|4|5|6|')
+        print('|7|8|9|')
+        self.grid = ['_','_','_',
+                    '_','_','_',
+                    '_','_','_']
+        self.victory = 'n'
+        self.playerTurnCount = 0
     
-    while(victory == 'n'):
-        playerTurn += 1
-        if playerTurn == 5:
-            victory = 'd'
+    def playGame(self) -> None:
+        while(self.victory == 'n'):
+            if self.playerTurnCount == 4:
+                self.victory = 'd'
 
-        grid, victory = PlayerAction('x', grid, victory)
-        
-        ShowGrid(grid)
-        if victory == 'n':
-            grid, victory = PlayerAction('o', grid, victory)
-            ShowGrid(grid)
+            self.playerAction('x')
+            self.checkVictory()
+            self.showGrid()
+            if self.victory == 'n':
+                self.playerAction('o')
+                self.checkVictory()
+                self.showGrid()
+            
+            self.playerTurnCount += 1
+    
+    def displayWinner(self) -> None:
+        print("Nobody wins\n") if self.victory == 'd' else print(self.victory + " wins\n")
+    
+    def playerAction(self, player:str) -> tuple:
+        usrInput = input(player + ": ")
+        if (usrInput in ("1", "2", "3", "4", "5", "6", "7", "8", "9")) and (self.grid[int(usrInput) - 1] == '_'):
+            self.grid[int(usrInput) - 1] = player
+        else:
+            self.playerAction(player)
+    
+    def checkVictory(self) -> None:
+        hor1 = [self.grid[0], self.grid[1], self.grid[2]]
+        hor2 = [self.grid[3], self.grid[4], self.grid[5]]
+        hor3 = [self.grid[6], self.grid[7], self.grid[8]]
+        ver1 = [self.grid[0], self.grid[3], self.grid[6]]
+        ver2 = [self.grid[1], self.grid[4], self.grid[7]]
+        ver3 = [self.grid[2], self.grid[5], self.grid[8]]
+        diag1 = [self.grid[0], self.grid[4], self.grid[8]]
+        diag2 = [self.grid[6], self.grid[4], self.grid[2]]
+        victoryLines = [hor1, hor2, hor3, ver1, ver2, ver3, diag1, diag2]
 
-    if victory == 'd':
-        print("Draw\n")
-    else:
-        print(victory + " wins\n")
-
-    StartGame()
+        for line in victoryLines:
+            if len(set(line)) == 1 and line[0] != '_': #check if all of the elements of a victory line are identical 
+                self.victory = line[0]
+                return 
+    
+    def showGrid(self) -> None:
+        print(f'|{self.grid[0]}|{self.grid[1]}|{self.grid[2]}|')
+        print(f'|{self.grid[3]}|{self.grid[4]}|{self.grid[5]}|')
+        print(f'|{self.grid[6]}|{self.grid[7]}|{self.grid[8]}|')
 
 if __name__ == "__main__":
-    StartGame()
+    while True:
+        ticTacToe = TicTacToe()
+        ticTacToe.playGame()
+        ticTacToe.displayWinner()
