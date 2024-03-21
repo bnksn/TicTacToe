@@ -6,24 +6,24 @@ class TicTacToe():
         self.grid = ['_','_','_',
                      '_','_','_',
                      '_','_','_']
-        self.victory = 'n'
-        self.playerTurnCount = 0
+        self.victory = None #At the end of the game, self.victory will be 'd' (for "draw") or 'x' or 'o'
+        self.xNumMoves = 0
     
     def playGame(self) -> None:
-        while(self.victory == 'n'):
-            if self.playerTurnCount == 4:
-                self.victory = 'd'
-
+        while(self.victory == None):
             self.playerAction('x')
             self.checkVictory()
             self.showGrid()
-            if self.victory == 'n':
+            self.xNumMoves += 1
+            if self.xNumMoves == 5 and self.victory == None: #If x has made 5 moves, then o has made 4 moves, hence the board is full
+                self.victory = 'd' #It is a draw because the board is full and no victory has been achieved
+                return
+
+            if self.victory == None:
                 self.playerAction('o')
                 self.checkVictory()
                 self.showGrid()
-            
-            self.playerTurnCount += 1
-    
+
     def displayWinner(self) -> None:
         print("Nobody wins\n") if self.victory == 'd' else print(self.victory + " wins\n")
     
