@@ -4,8 +4,8 @@ class TicTacToe():
         print('|4|5|6|')
         print('|7|8|9|')
         self.grid = ['_','_','_',
-                    '_','_','_',
-                    '_','_','_']
+                     '_','_','_',
+                     '_','_','_']
         self.victory = 'n'
         self.playerTurnCount = 0
     
@@ -27,7 +27,7 @@ class TicTacToe():
     def displayWinner(self) -> None:
         print("Nobody wins\n") if self.victory == 'd' else print(self.victory + " wins\n")
     
-    def playerAction(self, player:str) -> tuple:
+    def playerAction(self, player:str) -> None:
         usrInput = input(player + ": ")
         if (usrInput in ("1", "2", "3", "4", "5", "6", "7", "8", "9")) and (self.grid[int(usrInput) - 1] == '_'):
             self.grid[int(usrInput) - 1] = player
