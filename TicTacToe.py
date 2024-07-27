@@ -1,12 +1,8 @@
 class TicTacToe():
     def __init__(self) -> None:
-        print('|1|2|3|')
-        print('|4|5|6|')
-        print('|7|8|9|')
-        self.grid = ['_','_','_',
-                     '_','_','_',
-                     '_','_','_']
-        self.victory = None #At the end of the game, self.victory will be 'd' (for "draw") or 'x' or 'o'
+        print("|1|2|3|\n|4|5|6|\n|7|8|9|")
+        self.grid = ['_', '_', '_', '_', '_', '_', '_', '_', '_']
+        self.victory = None # At the end of the game, self.victory will be 'd' (for "draw") or 'x' or 'o'
         self.xNumMoves = 0
     
     def playGame(self) -> None:
@@ -15,8 +11,8 @@ class TicTacToe():
             self.checkVictory()
             self.showGrid()
             self.xNumMoves += 1
-            if self.xNumMoves == 5 and self.victory == None: #If x has made 5 moves, then o has made 4 moves, hence the board is full
-                self.victory = 'd' #It is a draw because the board is full and no victory has been achieved
+            if self.xNumMoves == 5 and self.victory == None: # If x has made 5 moves, then o has made 4 moves, hence the board is full
+                self.victory = 'd' # It is a draw because the board is full and no victory has been achieved
                 return
 
             if self.victory == None:
@@ -25,7 +21,7 @@ class TicTacToe():
                 self.showGrid()
 
     def displayWinner(self) -> None:
-        print("Nobody wins\n") if self.victory == 'd' else print(self.victory + " wins\n")
+        print("No one wins\n" if self.victory == 'd' else f"{self.victory} wins\n")
     
     def playerAction(self, player:str) -> None:
         usrInput = input(player + ": ")
@@ -46,7 +42,7 @@ class TicTacToe():
         victoryLines = [hor1, hor2, hor3, ver1, ver2, ver3, diag1, diag2]
 
         for line in victoryLines:
-            if len(set(line)) == 1 and line[0] != '_': #check if all of the elements of a victory line are identical 
+            if len(set(line)) == 1 and line[0] != '_': # Check if all of the elements of a victory line are identical 
                 self.victory = line[0]
                 return 
     
